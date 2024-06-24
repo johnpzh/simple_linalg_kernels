@@ -1,16 +1,21 @@
-# if [ $# -ne 1 ]; then
-#   echo "Usage: bash $0 <input.ta>"
-#   exit -1
-# fi
+if [ $# -ne 1 ]; then
+  echo "Usage: bash $0 <scf.mlir>"
+  exit -1
+fi
 # input_llvm=$1
 
-COMET_ROOT="/home/peng599/pppp/openmp-dialect/COMET-openmp"
-LLVM_ROOT="/home/peng599/pppp/openmp-dialect/COMET-openmp/llvm"
+COMET_ROOT="/people/peng599/pppp/comet-openmp-dialect/COMET-openmp"
+LLVM_ROOT="/people/peng599/pppp/comet-openmp-dialect/COMET-openmp/llvm"
 
-input_scf="mult_dense_matrix.large.ta.SCF.mlir"
+# input_scf="mult_dense_matrix.large.ta.SCF.mlir"
+input_scf="$1"
+echo "##"
+echo "## Run $0"
+echo "input_scf: ${input_scf}"
 
 # Number of Threads
 export OMP_NUM_THREADS=8
+echo "OMP_NUM_THREADS: ${OMP_NUM_THREADS}"
 
 # Input sparse matrix
 # export SPARSE_FILE_NAME0="../../integration_test/data/test_rank2.mtx"

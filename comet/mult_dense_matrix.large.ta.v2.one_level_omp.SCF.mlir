@@ -21,14 +21,15 @@ module {
     %0 = func.call @getTime() : () -> f64
     scf.parallel (%arg0) = (%c0) to (%c8000) step (%c1) {
       scf.for %arg1 = %c0 to %c400 step %c1 {
-        scf.parallel (%arg2) = (%c0) to (%c200) step (%c1) {
+        // scf.parallel (%arg2) = (%c0) to (%c200) step (%c1) {
+        scf.for %arg2 = %c0 to %c200 step %c1 {
           %2 = memref.load %alloc[%arg0, %arg1] : memref<8000x400xf64>
           %3 = memref.load %alloc_2[%arg1, %arg2] : memref<400x200xf64>
           %4 = memref.load %alloc_3[%arg0, %arg2] : memref<8000x200xf64>
           %5 = arith.mulf %2, %3 : f64
           %6 = arith.addf %4, %5 : f64
           memref.store %6, %alloc_3[%arg0, %arg2] : memref<8000x200xf64>
-          scf.reduce 
+          // scf.reduce 
         }
       }
       scf.reduce 
