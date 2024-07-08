@@ -24,13 +24,13 @@ import scipy.stats as ss
 #     return True
 
 
-def extract_data(filename: str):
+def extract_data(filename: str, matrix_name: str):
     with open(filename) as fin:
         runtimes = []
         for line in fin:
-            if not line.startswith("exe_time(s): "):
+            if not line.startswith("ELAPSED_TIME ="):
                 continue
-            time = float(line.split()[1])
+            time = float(line.split()[2])
             runtimes.append(time)
         
         avg_time = np.mean(runtimes)
@@ -39,25 +39,35 @@ def extract_data(filename: str):
         avg_time_parsed = F"{avg_time:.6f}"
         # std_dev_parsed = F"{std_dev:.2%}"
         cv_parsed = F"{cv:.2%}"
-        print("C++ execution:")
-        print(F"avg_time(s): {avg_time_parsed} coefficient_of_variation: {cv_parsed}")        
+        print("SCF execution:")
+        print(F"avg_time(s): {avg_time_parsed} coefficient_of_variation: {cv_parsed}")
         basename = os.path.splitext(os.path.basename(filename))[0]
         table = {
-            "C++_exe_time(s)": [avg_time_parsed],
-            "C++_exe_time_cv": [cv_parsed]
+            "name": [matrix_name],
+            "scf_exe_time(s)": [avg_time_parsed],
+            "scf_exe_time_cv": [cv_parsed]
         }
-        df = pd.DataFrame(data=table)
         output_file = F"{basename}.revised.csv"
+        if os.path.exists(output_file):
+            df = pd.read_csv(output_file)
+            # df = df.append(table, ignore_index=True)
+            df = pd.concat([df, pd.DataFrame(data=table)], ignore_index=True)
+        else:
+            df = pd.DataFrame(data=table)
+
         df.to_csv(output_file, index=False)
         print(F"Saved to file {output_file}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("parse C++ output")
+    parser = argparse.ArgumentParser("parse COMET output")
     parser.add_argument("--input", "-i", type=str, help="input log file")
+    parser.add_argument("--matrix-name", "-m", type=str, help="matrix name")
+    
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(-1)
     args = parser.parse_args()
 
     filename = args.input
-    extract_data(filename)
+    matrix_name = args.matrix_name
+    extract_data(filename, matrix_name)

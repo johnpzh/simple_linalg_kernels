@@ -1,2 +1,2 @@
-scf_exe_time(s),scf_exe_time_std
-5.961611,7.20%
+C++_exe_time(s),C++_exe_time_cv
+0.046252,1.21%

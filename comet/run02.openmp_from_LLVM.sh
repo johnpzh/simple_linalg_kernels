@@ -1,5 +1,5 @@
 if [ $# -ne 1 ]; then
-  echo "Usage: bash $0 <scf.mlir>"
+  echo "Usage: bash $0 <llvm.mlir>"
   exit -1
 fi
 # input_llvm=$1
@@ -7,11 +7,10 @@ fi
 COMET_ROOT="/people/peng599/pppp/comet-openmp-dialect/COMET-openmp"
 LLVM_ROOT="/people/peng599/pppp/comet-openmp-dialect/COMET-openmp/llvm"
 
-# input_scf="mult_dense_matrix.large.ta.SCF.mlir"
-input_scf="$1"
+input_llvm="$1"
 echo "##"
 echo "## Run $0"
-echo "input_scf: ${input_scf}"
+echo "input_llvm: ${input_llvm}"
 
 # Number of Threads
 export OMP_NUM_THREADS=8
@@ -42,7 +41,7 @@ fi
 comet_opt="${COMET_ROOT}/build-debug/bin/comet-opt"
 mlir_opt="${LLVM_ROOT}/build/bin/mlir-opt"
 # input_ta="mult_dense_matrix.ta"
-basename=$(basename ${input_scf} ".SCF.mlir")
+basename=$(basename ${input_llvm} ".LLVM.mlir")
 # comet_opt_options="--convert-ta-to-it --convert-to-loops --convert-to-llvm"
 # src_llvm="${basename}.llvm.llvm"
 # eval ${comet_opt} ${comet_opt_options} ${input_ta} &> ${src_llvm}
@@ -59,7 +58,7 @@ basename=$(basename ${input_scf} ".SCF.mlir")
 # scf_options="--convert-ta-to-it --convert-to-loops  --opt-comp-workspace"
 # eval ${comet_opt} ${scf_options} ${input_ta} &> ${src_scf}
 
-src_llvm="${basename}.LLVM.mlir"
+# src_llvm="${basename}.LLVM.mlir"
 llvm_options="\
 -convert-linalg-to-loops \
 -lower-affine \
@@ -75,7 +74,7 @@ llvm_options="\
 -convert-to-llvm \
 "
 # eval ${comet_opt} ${llvm_options} ${src_scf} &> ${src_llvm}
-eval ${mlir_opt} ${llvm_options} ${input_scf} &> ${src_llvm}
+# eval ${mlir_opt} ${llvm_options} ${input_scf} &> ${src_llvm}
 
 # Runner
 mlir_cpu_runner="${LLVM_ROOT}/build/bin/mlir-cpu-runner"
@@ -83,4 +82,4 @@ mlir_cpu_runner_options="-O3 -e main -entry-point-result=void"
 mlir_cpu_runner_shared_libs="${COMET_ROOT}/build-release/lib/libcomet_runner_utils.${EXT},\
 ${LLVM_ROOT}/build/lib/libomp.${EXT}\
 "
-eval ${mlir_cpu_runner} ${mlir_cpu_runner_options} -shared-libs="${mlir_cpu_runner_shared_libs}" ${src_llvm}
+eval ${mlir_cpu_runner} ${mlir_cpu_runner_options} -shared-libs="${mlir_cpu_runner_shared_libs}" ${input_llvm}

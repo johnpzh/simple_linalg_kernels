@@ -63,13 +63,17 @@ src_llvm="${basename}.LLVM.mlir"
 llvm_options="\
 -convert-linalg-to-loops \
 -lower-affine \
--convert-scf-to-openmp \
+-async-parallel-for \
+-async-to-async-runtime \
+-async-runtime-ref-counting \
+-async-runtime-ref-counting-opt \
+-convert-async-to-llvm \
+-arith-expand \
 -finalize-memref-to-llvm \
 -convert-scf-to-cf \
 -convert-cf-to-llvm \
 -convert-func-to-llvm \
 -convert-index-to-llvm \
--convert-openmp-to-llvm \
 -convert-vector-to-llvm \
 -canonicalize \
 -convert-to-llvm \
@@ -81,6 +85,6 @@ eval ${mlir_opt} ${llvm_options} ${input_scf} &> ${src_llvm}
 mlir_cpu_runner="${LLVM_ROOT}/build/bin/mlir-cpu-runner"
 mlir_cpu_runner_options="-O3 -e main -entry-point-result=void"
 mlir_cpu_runner_shared_libs="${COMET_ROOT}/build-release/lib/libcomet_runner_utils.${EXT},\
-${LLVM_ROOT}/build/lib/libomp.${EXT}\
+${LLVM_ROOT}/build/lib/libmlir_async_runtime.${EXT}\
 "
 eval ${mlir_cpu_runner} ${mlir_cpu_runner_options} -shared-libs="${mlir_cpu_runner_shared_libs}" ${src_llvm}
