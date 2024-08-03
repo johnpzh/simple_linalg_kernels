@@ -28,3 +28,7 @@ target_link_libraries(spmm.v2 PUBLIC sparse_mm OpenMP::OpenMP_CXX)
 # SpMM-v3
 add_executable(spmm.v3.schedule src/spmm.v3.schedule.cpp)
 target_link_libraries(spmm.v3.schedule PUBLIC sparse_mm OpenMP::OpenMP_CXX)
+
+# SpGEMM
+add_executable(spgemm src/spgemm.cpp)
+target_link_libraries(spgemm PUBLIC sparse_mm OpenMP::OpenMP_CXX)

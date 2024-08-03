@@ -45,6 +45,16 @@ CSRMatrix::CSRMatrix(int64_t num_rows, int64_t num_cols, int64_t nnz) {
   alloc_matrix(num_rows, num_cols, nnz);
 }
 
+CSRMatrix::CSRMatrix(const CSRMatrix &csr_matrix) {
+  alloc_matrix(csr_matrix.num_rows_,
+               csr_matrix.num_cols_,
+               csr_matrix.nnz_);
+  
+  std::copy(csr_matrix.row_offsets_, csr_matrix.row_offsets_ + num_rows_ + 1, row_offsets_);
+  std::copy(csr_matrix.col_ind_, csr_matrix.col_ind_ + nnz_, col_ind_);
+  std::copy(csr_matrix.values_, csr_matrix.values_ + nnz_, values_);
+}
+
 CSRMatrix::~CSRMatrix() {
   free(row_offsets_);
   free(col_ind_);
@@ -258,7 +268,7 @@ void read_csr_matrix(const char *filename,
 
 /// Print CSR Matrix
 void print_csr_matrix(const CSRMatrix *csr_matrix) {
-  printf("\nPrinting CSR Matrix...\n");
+  printf("Printing CSR Matrix...\n");
   // printf("num_rows_: %lld\n", csr_matrix->num_rows_);
   // printf("num_cols_: %lld\n", csr_matrix->num_cols_);
   // printf("nnz_: %lld\n", csr_matrix->nnz_);

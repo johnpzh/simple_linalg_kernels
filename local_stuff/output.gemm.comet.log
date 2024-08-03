@@ -1,5 +1,0 @@
-##
-## Run run03.async_from_scf.sh
-input_scf: mult_dense_matrix.large.k32.ta.SCF.mlir
-OMP_NUM_THREADS: 8
-SPARSE_FILE_NAME0: 

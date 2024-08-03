@@ -18,6 +18,7 @@ struct CSRMatrix {
   CSRMatrix(int64_t num_rows,
             int64_t num_cols,
             int64_t nnz);
+  CSRMatrix(const CSRMatrix &csr_matrix);
   virtual ~CSRMatrix();
 
   void alloc_row_offsets_(int64_t size);
