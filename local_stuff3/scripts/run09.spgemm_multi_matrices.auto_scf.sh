@@ -46,10 +46,10 @@ for matrix in "${MATRICES[@]}"; do
     eval "${spgemm}" "${SPARSE_FILE_NAME0}" | tee "${output_cpp}"
 
     # COMET
-    input_scf="mult_spgemm_CSRxCSR_oCSR.ta.v0.openmp.SCF.mlir"
+    input_scf="mult_spgemm_CSRxCSR_oCSR.ta.v2.correct_ws_data.SCF.mlir"
     last_cwd=$(pwd)
     cd ../comet
-    bash run01.openmp_from_scf.sh "${input_scf}" | tee "../local_stuff/${output_comet}"
+    bash run01.openmp_from_scf.sh "${input_scf}" | tee "../local_stuff3/${output_comet}"
 
     # Parse the results
     cd "${last_cwd}"

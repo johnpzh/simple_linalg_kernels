@@ -41,8 +41,8 @@ printenv
 #For each different parallel executable you launch we recommend
 #adding a corresponding ldd command to verify that the environment
 #that is loaded corresponds to the environment the executable was built in.
-project_path="/people/peng599/pppp/vscode/simple_linalg_kernels/local_stuff"
-command="bash scripts/run08.spgemm_multi_matrices.sh"
+project_path="/people/peng599/pppp/vscode/simple_linalg_kernels/local_stuff3"
+command="bash scripts/run09.spgemm_multi_matrices.auto_scf.sh"
 
 cd "${project_path}" || exit
 eval "${command}"

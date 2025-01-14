@@ -14,7 +14,7 @@ echo "## Run $0"
 echo "input_scf: ${input_scf}"
 
 # Number of Threads
-export OMP_NUM_THREADS=8
+# export OMP_NUM_THREADS=8
 echo "OMP_NUM_THREADS: ${OMP_NUM_THREADS}"
 
 # Input sparse matrix
@@ -25,6 +25,7 @@ echo "OMP_NUM_THREADS: ${OMP_NUM_THREADS}"
 # export SPARSE_FILE_NAME0="/Users/peng599/Library/CloudStorage/OneDrive-PNNL/Documents/Datasets/pwtk/pwtk.mtx"
 
 echo "SPARSE_FILE_NAME0: ${SPARSE_FILE_NAME0}"
+echo "SPARSE_FILE_NAME1: ${SPARSE_FILE_NAME1}"
 
 #
 # Test if this machine is running macOS
